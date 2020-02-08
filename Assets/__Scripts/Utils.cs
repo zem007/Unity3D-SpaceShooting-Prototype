@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//定义一种新的变量类型 BoundsTest， 该类型里面有三个值
+public enum BoundsTest {
+    center,
+    onScreen,
+    offScreen
+}
+
 public class Utils : MonoBehaviour
 {
     public static Bounds BoundsUnion(Bounds b0, Bounds b1) 
@@ -72,4 +79,107 @@ public class Utils : MonoBehaviour
         _camBounds.Encapsulate(boundTLN);
         _camBounds.Encapsulate(boundBRF);
     }
+
+    //=================================边界框函数===================================//
+
+    //检查飞机边界框bnd是否位于镜头框camBounds之内
+    public static Vector3 ScreenBoundsCheck(Bounds bnd, BoundsTest test = BoundsTest.center) {
+        return(BoundsInBoundsCheck(camBounds, bnd, test));
+    }
+
+    //检查边界框lilB是否位于边界框bigB之内，根据所选的BoundsTest，此函数的行为也不同
+    public static Vector3 BoundsInBoundsCheck(Bounds bigB, Bounds lilB, BoundsTest test = BoundsTest.onScreen) 
+    {
+        Vector3 pos = lilB.center;
+
+        //初始化offset为0
+        Vector3 off = Vector3.zero;
+        //测定平移距离off的值
+        switch(test) {
+            case BoundsTest.center:
+                if(bigB.Contains(pos)) {
+                    return(Vector3.zero);
+                }
+                if(pos.x > bigB.max.x) {
+                    off.x = pos.x - bigB.max.x;
+                } else if(pos.x < bigB.min.x) {
+                    off.x = pos.x - bigB.min.x;
+                }
+                if(pos.y > bigB.max.y) {
+                    off.y = pos.y - bigB.max.y;
+                } else if(pos.y < bigB.min.y) {
+                    off.y = pos.y - bigB.min.y;
+                }
+                if(pos.z > bigB.max.z) {
+                    off.z = pos.z - bigB.max.z;
+                } else if(pos.z < bigB.min.z) {
+                    off.z = pos.z - bigB.min.z;
+                }
+                return(off);
+
+            case BoundsTest.onScreen:
+                if(bigB.Contains(lilB.min) && bigB.Contains(lilB.max)) {
+                    return(Vector3.zero);
+                }
+                if(lilB.max.x > bigB.max.x) {
+                    off.x = lilB.max.x - bigB.max.x;
+                } else if(lilB.min.x < bigB.min.x) {
+                    off.x = lilB.min.x - bigB.min.x;
+                }
+                if(lilB.max.y > bigB.max.y) {
+                    off.y = lilB.max.y - bigB.max.y;
+                } else if(lilB.min.y < bigB.min.y) {
+                    off.y = lilB.min.y - bigB.min.y;
+                }
+                if(lilB.max.z > bigB.max.z) {
+                    off.z = lilB.max.z - bigB.max.z;
+                } else if(lilB.min.z < bigB.min.z) {
+                    off.z = lilB.min.z - bigB.min.z;
+                }
+                return(off);
+
+            case BoundsTest.offScreen:
+                if(bigB.Contains(lilB.min) || bigB.Contains(lilB.max)) {
+                    return(Vector3.zero);
+                }
+                if(lilB.min.x > bigB.max.x) {
+                    off.x = lilB.min.x - bigB.max.x;
+                } else if(lilB.max.x < bigB.min.x) {
+                    off.x = lilB.max.x - bigB.min.x;
+                }
+                if(lilB.min.y > bigB.max.y) {
+                    off.y = lilB.min.y - bigB.max.y;
+                } else if(lilB.max.y < bigB.min.y) {
+                    off.y = lilB.max.y - bigB.min.y;
+                }
+                if(lilB.min.z > bigB.max.z) {
+                    off.z = lilB.min.z - bigB.max.z;
+                } else if(lilB.max.z < bigB.min.z) {
+                    off.z = lilB.max.z - bigB.min.z;
+                }
+                return(off);
+        }
+        return(Vector3.zero);
+    }
+
+    //==================================变换函数====================================//
+
+    //递归寻找transform.parent树
+    //直到找到对象的tag != "Untagged" 或者没有父对象为止
+    public static GameObject FindTaggedParent(GameObject go)
+    {
+        if(go.tag != "Untagged") {
+            return(go);
+        }
+        if(go.transform.parent == null) {
+            return(null);
+        }
+        return(FindTaggedParent(go.transform.parent.gameObject));
+    }
+
+    //这个版本的FindTaggedParent（）函数以transform为参数
+    public static GameObject FindTaggedParent(Transform t) {
+        return(FindTaggedParent(t.gameObject));
+    }
+
 }
