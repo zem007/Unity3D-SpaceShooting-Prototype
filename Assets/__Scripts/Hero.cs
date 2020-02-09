@@ -13,6 +13,10 @@ public class Hero : MonoBehaviour
     private float _shieldLevel = 1;
     public bool _______________________;
     public Bounds bounds;
+    //声明一个新的委托类型
+    public delegate void WeaponFireDelegate();
+    //创建一个委托类型的字段
+    public WeaponFireDelegate fireDelegate;
 
     void Awake() 
     {
@@ -46,6 +50,13 @@ public class Hero : MonoBehaviour
         }
         //飞机移动时，旋转一个角度，更有动感
         transform.rotation = Quaternion.Euler(yAxis*pitchMult, xAxis*rollMult, 0);
+
+        //使用fireDelegate委托发射武器
+        //首先，确认玩家按下了Jump键，然后确认fireDelegate不为零
+        if(Input.GetAxis("Jump") == 1 && fireDelegate != null) {
+            fireDelegate();
+        }
+
     }
 
     public GameObject lastTriggerGo = null;
