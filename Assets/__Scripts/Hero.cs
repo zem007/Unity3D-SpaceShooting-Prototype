@@ -11,6 +11,7 @@ public class Hero : MonoBehaviour
     public float pitchMult = 30;
     [SerializeField]
     private float _shieldLevel = 1;
+    public Weapon[] weapons;  //用来显示头端的各个炮筒
     public bool _______________________;
     public Bounds bounds;
     //声明一个新的委托类型
@@ -27,7 +28,9 @@ public class Hero : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        //重置武器, 然战机从装备一个高爆武器开始
+        ClearWeapons();
+        weapons[0].SetType(WeaponType.blaster);
     }
 
     // Update is called once per frame
@@ -73,6 +76,8 @@ public class Hero : MonoBehaviour
             if(go.tag == "Enemy") {
                 shieldLevel --;
                 Destroy(go);
+            } else if(go.tag == "PowerUp") {
+                AbsorbPowerUp(go);
             } else {
                 print("触发碰撞事件： " + go.name);
             }
@@ -80,6 +85,45 @@ public class Hero : MonoBehaviour
             print("触发碰撞事件： " + other.gameObject.name);
         }
     }
+
+    public void AbsorbPowerUp(GameObject go)
+    {
+        PowerUp pu = go.GetComponent<PowerUp>(); //获取PowerUp的脚本!
+        switch (pu.type) {
+            case WeaponType.shield:
+                shieldLevel ++;
+                break;
+            default:    //如果是任意一种武器的升级道具
+                //检查当前的武器类型
+                if(pu.type == weapons[0].type) {
+                    Weapon w = GetEmptyWeaponSlot();
+                    if(w != null) {
+                        w.SetType(pu.type);
+                    }
+                } else {
+                    ClearWeapons();
+                    weapons[0].SetType(pu.type);
+                }
+                break;
+        }
+        pu.AbsorbedBy(this.gameObject); //调用PowerUp脚本中的AbsorbedBy函数，来销毁道具
+    }
+    //找到一个空白的武器位置
+    Weapon GetEmptyWeaponSlot() {
+        for(int i=0; i<weapons.Length; i++) {
+            if(weapons[i].type == WeaponType.none) {
+                return(weapons[i]);
+            }
+        }
+        return(null);
+    }
+    
+    void ClearWeapons() {
+        foreach(Weapon w in weapons) {
+            w.SetType(WeaponType.none);
+        }
+    }
+
     //shieldLevel属性将监视_shieldLevel字段
     public float shieldLevel {
         get {

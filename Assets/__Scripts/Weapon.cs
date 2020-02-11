@@ -39,10 +39,13 @@ public class Weapon : MonoBehaviour
     public GameObject collar;
     public float lastShot;
 
+    void Awake() {
+        collar = transform.Find("Collar").gameObject;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        collar = transform.Find("Collar").gameObject;
         //调用SetType()，正确设置默认武器的类型_type
         SetType(_type);
         if(PROJECTILE_ANCHOR == null) {

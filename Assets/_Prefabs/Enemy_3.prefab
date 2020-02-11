@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3226947891064751320}
   - component: {fileID: 3226947891064751321}
+  - component: {fileID: 5998942213284237016}
   m_Layer: 9
   m_Name: Enemy_3
   m_TagString: Enemy
@@ -50,6 +51,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 120
   m_CollisionDetection: 0
+--- !u!64 &5998942213284237016
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3226947891064751323}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 0}
 --- !u!1 &3226947891889413126
 GameObject:
   m_ObjectHideFlags: 0

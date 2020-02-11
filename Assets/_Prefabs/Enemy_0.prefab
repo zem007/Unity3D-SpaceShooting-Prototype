@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 2012431599092679792}
   - component: {fileID: 2012431599092679793}
   - component: {fileID: 1819827105248772145}
+  - component: {fileID: 5236830769724268955}
   m_Layer: 9
   m_Name: Enemy_0
   m_TagString: Enemy
@@ -158,6 +159,7 @@ MonoBehaviour:
   health: 10
   score: 100
   showDamageForFrames: 2
+  powerUpDropChance: 1
   ______________________: 0
   originalColors: []
   materials: []
@@ -166,6 +168,20 @@ MonoBehaviour:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   boundsCenterOffset: {x: 0, y: 0, z: 0}
+--- !u!64 &5236830769724268955
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012431599092679799}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 0}
 --- !u!1 &2012431599908554855
 GameObject:
   m_ObjectHideFlags: 0
