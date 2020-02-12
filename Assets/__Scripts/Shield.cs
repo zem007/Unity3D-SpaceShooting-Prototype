@@ -8,12 +8,6 @@ public class Shield : MonoBehaviour
     public bool ________________________;
     public int levelShown = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {

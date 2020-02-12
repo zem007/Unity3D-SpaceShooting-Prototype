@@ -125,10 +125,4 @@ public class Weapon : MonoBehaviour
         lastShot = Time.time;
         return(p);
     }
-
-    // Update is called once per frame
-    void Update() 
-    {
-        
-    }
 }
